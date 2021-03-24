@@ -1,0 +1,93 @@
+html{
+    background-color: lightgray;
+    
+}
+
+body{
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 5px 5px 5px;
+}
+.imageHolder{
+    position: relative;
+    float: left;
+    padding: 20px;
+    padding-top: 0px;
+    margin-left: 0px;
+    padding-left: 0px ;
+    border-width: 3px;
+}
+.smallPic{
+    width: 100px;
+    box-shadow: 5px 5px 5px ;
+    padding: 5px;
+   
+    padding-top: 0px;
+    
+
+}
+.caption {
+    position: absolute;
+    height: 30px;
+    bottom: 20px;
+    margin-left: 12px;
+    color: #ffffff;
+    text-align:center;
+    font-weight:bold;
+    opacity:0.7;
+    font-size: 10px;
+}
+.floatright{
+    float: right;
+    position: relative;
+    padding: 10px;
+    padding-top: 0px;
+    margin-right: 0px ;
+    padding-right: 0px ;
+    border-width: 0px;
+}
+.container {
+    position: relative;
+    
+    
+  }
+  
+  .image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #008CBA;
+  }
+  
+  .container:hover .overlay {
+    opacity: 1;
+  }
+  
+  .text {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
