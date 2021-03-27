@@ -1,19 +1,70 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>User Information</title>
+        <meta charset = "utf-8"/>
+        <title><b>User Information</b></title>
+        <meta name = "viewport" content="width = device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" media="screen" href ="style.css"/>
         <script src="jquery-3.1.0.min.js"></script>
         <script src="popup.js"></script>
     </head>
-    <body>
-        <h1>User Information</h1>
-        <h2>Chrome uuid: <span id="total">...</span></h2>
-        <h2>Timestamp: <span id="limit">...</span></h2>
-        <h2>Url: <span id = "url">...</span></h2>
-        <h2>Domain: <span id = "domain">...</span></h2>
-        <h3>Selecting the following buttons to define the article: </h3>
+    <body text ="green">
+
+
+    <table>
+
+        <caption><h1><b><i>INFORMATION OF USER</i></b></h1></caption>
+        <tr>
+            <th><font size ="4">Chrome User ID</font></th>
+        </tr>
+
+        <tr>
+            <td><input type="text" id ="user_id" name="name" required minlength="4" maxlength="8" size="50"></td>
+        </tr>
+
+        <tr>
+            <th><font size ="4">Time Stamp</font></th>
+        </tr>
+        <tr>
+            <td><input type="datetime-local" id="meeting-time"
+                name="meeting-time" value="2021-06-12T19:30"
+                min="2021-01-01T00:00" max="2021-12-12T00:00">
+            </td>
+        </tr>
+        <tr>
+            <th><font size ="4">URL</font></th>
+        </tr>
+
+
+        <tr>
+            <td>
+                <script src="get_current_url.js"></script>
+
+            </td>
+        </tr>
+
+        <tr>
+            <th><font size ="4">Domain</font></th>
+        </tr>
+        <tr>
+            <td><input type="text" id ="domain" name="name" required minlength="4" maxlength="8" size="50"></td>
+        </tr>
+
+        <tr>
+            <th><font size ="4">Link To Article</font></th>
+        </tr>
+        <tr>
+            <td><input type="text" id ="link" name="name" required minlength="4" maxlength="8" size="50"></td>
+        </tr>
+    </table>
+
+
+
+        <h2>Selecting the following buttons to define the article: </h2>
         <input id="misinformation" type="submit" value="Misinformation"/>
-        <input id="real" type="submit" value="real"/>
-        <input id="unlabeled" type="submit" value="unlabeled"/>
+        <input id="real" type="submit" value="Real"/>
+        <input id="unlabeled" type="submit" value="Unlabeled"/>
+
     </body>
 </html>
+
