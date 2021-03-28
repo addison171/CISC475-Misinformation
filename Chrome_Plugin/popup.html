@@ -4,7 +4,7 @@
         <meta charset = "utf-8"/>
         <title><b>User Information</b></title>
         <meta name = "viewport" content="width = device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" media="screen" href ="style.css"/>
+        <link rel="stylesheet" type="text/css" media="screen" href ="css/style.css"/>
         <script src="jquery-3.1.0.min.js"></script>
         <script src="popup.js"></script>
     </head>
@@ -58,12 +58,19 @@
         </tr>
     </table>
 
+    <form action="record_process.php" method="POST">
+        <div>
+            <br/>
+        <h2 >Please choose your attitude towards this article: </h2>
+        <p><font size="3"><input id="misinformation" name="attitude" type="radio" value="Misinformation"/>Misinformation</font></p>
+        <p><font size="3"><input id="real" name="attitude" type="radio" value="Real"/>Real</font></p>
+            <p><font size="3"><input id="unlabeled" name="attitude" type="radio" value="Unlabeled"/>Unlabeled</font></p>
+        </div>
+    </form>
+            <br/>
 
-
-        <h2>Selecting the following buttons to define the article: </h2>
-        <input id="misinformation" type="submit" value="Misinformation"/>
-        <input id="real" type="submit" value="Real"/>
-        <input id="unlabeled" type="submit" value="Unlabeled"/>
+        <input type="hidden" id="message" value="work makes me happy">
+        <input type="submit" name="submit" value="Submit">
 
     </body>
 </html>
