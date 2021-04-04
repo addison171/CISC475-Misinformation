@@ -6,11 +6,11 @@
         <meta name = "viewport" content="width = device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" media="screen" href ="css/style.css"/>
         <script src="jquery-3.1.0.min.js"></script>
-        <script src="popup.js"></script>
+
+
     </head>
-    <body text ="green">
-
-
+    <body text ="green" onLoad = "renderTime()">
+        <h1 id="clockDisplay"></h1>
     <table>
 
         <caption><h1><b><i>INFORMATION OF USER</i></b></h1></caption>
@@ -23,14 +23,15 @@
         </tr>
 
         <tr>
-            <th><font size ="4">Time Stamp</font></th>
+            <th><font size ="4">Time</font></th>
         </tr>
+
         <tr>
-            <td><input type="datetime-local" id="meeting-time"
-                name="meeting-time" value="2021-06-12T19:30"
-                min="2021-01-01T00:00" max="2021-12-12T00:00">
+            <td id="clockDisplay" class="container">
+
             </td>
         </tr>
+
         <tr>
             <th><font size ="4">URL</font></th>
         </tr>
@@ -57,6 +58,8 @@
             <td><input type="text" id ="link" name="name" required minlength="4" maxlength="8" size="50"></td>
         </tr>
     </table>
+
+    
 
     <form action="record_process.php" method="POST">
         <div>
