@@ -15,8 +15,6 @@
     "default_popup": "popup.html"
   },
 
-  
-
   "permissions": [
     "tabs",
     "contextMenus"
@@ -25,3 +23,5 @@
   "options_page": 
   "options.html"
 }
+
+
