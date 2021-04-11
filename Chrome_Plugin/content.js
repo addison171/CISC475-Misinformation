@@ -1,10 +1,9 @@
 // content.js
 function GetTime() {
-    $(document).ready(function () {
-        document.getElementById("clockDisplay").innerHTML = Date();
-    });
+  $(document).ready(function () {
+      document.getElementById("clockDisplay").innerHTML = Date();
+  });
 }
-
 
 //function to get Current URL
 function getCurrentTabUrl(callback) {  
@@ -58,5 +57,18 @@ function getCurrentTabUrl(callback) {
 $(document).ready(function() {
     GetTime();
     setInterval( GetTime, 1000 );
+});
+
+// generate a unique id
+
+const generateID = () =>
+  Date.now().toString(Math.floor(Math.random() * 20) + 17);
+  
+const btnGenerate = document.getElementById('generateID');
+const generateIDTXT = document.getElementById('generateidtxt');
+const copy = document.getElementById('copy');
+
+btnGenerate.addEventListener('click', () => {
+  generateIDTXT.value = generateID();
 });
 
