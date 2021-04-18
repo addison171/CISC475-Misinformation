@@ -72,3 +72,4 @@ btnGenerate.addEventListener('click', () => {
   generateIDTXT.value = generateID();
 });
 
+//------------------------------------------------------------------
