@@ -1,5 +1,5 @@
 table{
-    width:400px;
+    width:600px;
     border-spacing:4px;
 }
 th{
@@ -16,4 +16,40 @@ tr:nth-child(even){
 }
 tr:nth-child(odd){
     background-color: #ddd;
+}
+
+.time-span{
+    display: inline-block;
+    width: 80px;
+}
+
+.container-attitude {
+    height: 300px;
+
+}
+
+.container-learning {
+    height: 300px;
+
+}
+
+.axis path,
+.axis line{
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+.MyRect {
+    fill: steelblue;
+}
+
+.MyText {
+    fill: white;
+    text-anchor: middle;
 }
