@@ -118,7 +118,7 @@ def learning():
             conn = sqlite3.connect("sample.db")
             try:
                 cur = conn.cursor()
-                sql = 'select attitude, count(id) as data_count from DATA where time>=\"' + start_time+ '\" and time<=\"' + end_time + '\" group by learning'
+                sql = 'select learning, count(id) as data_count from DATA where time>=\"' + start_time+ '\" and time<=\"' + end_time + '\" group by learning'
                 print sql
                 cursor = cur.execute(sql)
                 for row in cursor:
