@@ -5,6 +5,43 @@ function GetTime() {
   });
 }
 
+//Stuff for firebase
+chrome.runtime.onMessage.addListener((msg, sender, resp) => {
+  if (msg.command == "post") {
+    var data = msg.data;
+    var classification = data.classification;
+    var id = data.id;
+    var website = data.website;
+    console.log("HEREEEEE");
+
+    try {
+      var newPost = firebase.database().ref('sites').push.set({
+        classification: classification,
+        id: id,
+        website: website
+      })
+    }
+    finally {
+      console.log("whatevs");
+    }
+  }
+})
+function sendData(website, id, classification){
+  chrome.runtime.sendMessage({command: "post", data: {classification: classification, website: website, id: id}},
+  (response) => {
+      console.log("hi");
+  });
+}
+
+
+
+// content.js
+function GetTime() {
+  $(document).ready(function () {
+      document.getElementById("clockDisplay").innerHTML = Date();
+  });
+}
+
 //function to get Current URL
 function getCurrentTabUrl(callback) {  
     var queryInfo = {
@@ -39,7 +76,7 @@ function getCurrentTabUrl(callback) {
     });
   }
   //------------------------------------------------------------------------
-  
+  /*
   document.addEventListener('DOMContentLoaded', function() {
     getCurrentTabUrl(function(url) {
       renderURL(url); 
@@ -58,7 +95,7 @@ $(document).ready(function() {
     GetTime();
     setInterval( GetTime, 1000 );
 });
-
+*/
 // generate a unique id
 
 const generateID = () =>
@@ -71,4 +108,6 @@ const copy = document.getElementById('copy');
 btnGenerate.addEventListener('click', () => {
   generateIDTXT.value = generateID();
 });
+
+const btnSubmit = document.getElementById('')
 

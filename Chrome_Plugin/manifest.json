@@ -15,13 +15,22 @@
     "default_popup": "popup.html"
   },
 
+  "background": {
+    "page": "background.html",
+    "persistent": false
+  },
+
   "permissions": [
     "tabs",
     "contextMenus"
   ],
 
+  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com https://www.googletagmanager.com; object-src 'self'",
+
   "options_page": 
   "options.html"
+
 }
+
 
 
