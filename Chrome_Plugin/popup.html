@@ -6,6 +6,7 @@
         <meta name = "viewport" content="width = device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" media="screen" href ="css/style.css"/>
         <script src="jquery-3.1.0.min.js"></script>
+        <script src="d3.min.js" charset="utf-8"></script>
 
 
     </head>
@@ -39,7 +40,7 @@
         <tr>
             <td>
                 <button class = "button" id="generateID">Generate ID</button>
-                <input class= "style1" type="text" id="generateidtxt" />
+                <input class= "style1" type="text" name="uuid" id="generateidtxt" />
             </td>  
         </tr>
 
@@ -48,9 +49,7 @@
         </tr>
 
         <tr>
-            <td id="clockDisplay" class="container">
-
-            </td>
+            <td id="clockDisplay" class="container"></td>
         </tr>
 
         <tr>
@@ -72,39 +71,94 @@
 
             </td>
         </tr>
+        <tr>
+            <th><font size ="4">Title</font></th>
+        </tr>
+       
+        <tr>
+            <td id='titleDisplay', class='container'>
+
+            </td>
+        </tr>
+
 
         <tr>
-            <th><font size ="4">Link To Article</font></th>
+            <th><font size ="4">Referring Site</font></th>
         </tr>
         <tr>
             <td><input type="text" id ="link" name="name" required minlength="4" maxlength="8" size="50"></td>
         </tr>
-    </table>
+
+
+
 
     
-
-    <form action="record_process.php" method="POST">
+        <tr>
+            <th><font size ="4">Attitude && leaning</font></th>
+        </tr>
+        <tr>
+        <td>
         <div>
-            <br/>
-        <h2 >Please choose your attitude towards this article: </h2>
-        <p><font size="3"><input id="misinformation" name="attitude" type="radio" value="Misinformation"/>Misinformation</font></p>
+        <p><font size="3"><input checked="true" id="misinformation" name="attitude" type="radio" value="Misinformation"/>Misinformation</font></p>
         <p><font size="3"><input id="real" name="attitude" type="radio" value="Real"/>Real</font></p>
             <p><font size="3"><input id="unlabeled" name="attitude" type="radio" value="Unlabeled"/>Unlabeled</font></p>
 
             <h2 >Please show your political learning towards this article: </h2>
-                <p><font size="3"><input id="Very conservative" name="attitude" type="radio" value="Very conservative"/>Misinformation</font></p>
-                <p><font size="3"><input id="Conservative" name="attitude" type="radio" value="Conservative"/>Conservative</font></p>
-                <p><font size="3"><input id="Centrist" name="attitude" type="radio" value="Centrist<"/>Centrist</font></p>
-                <p><font size="3"><input id="Liberal" name="attitude" type="radio" value="Liberal"/>Liberal</font></p>
-                 <p><font size="3"><input id="Very Liberal" name="attitude" type="radio" value="Very Liberal"/>Very Liberal</font></p>
+                <p><font size="3"><input checked="true" id="Very conservative" name="learning" type="radio" value="Very conservative"/>Misinformation</font></p>
+                <p><font size="3"><input id="Conservative" name="learning" type="radio" value="Conservative"/>Conservative</font></p>
+                <p><font size="3"><input id="Centrist" name="learning" type="radio" value="Centrist"/>Centrist</font></p>
+                <p><font size="3"><input id="Liberal" name="learning" type="radio" value="Liberal"/>Liberal</font></p>
+                 <p><font size="3"><input id="Very Liberal" name="learning" type="radio" value="Very Liberal"/>Very Liberal</font></p>
 
         </div>
-    </form>
-            <br/>
+        </td>
+        </tr>
 
-        <input type="hidden" id="message" value="work makes me happy">
-        <input type="submit" name="submit" value="Submit">
+   
+        <tr>
+        <td>
+        <input type="submit" name="submit" id="submit" value="Submit" />
+        </td>
+        </tr>
+
+        </table>
+
+
+
+
+        <!-- show donut or linear slider-->
+        <table>
+            <caption><h1><b><i>graphs</i></b></h1></caption>
+        <tr>
+            <td>
+                <div><span class="time-span">start_time: </span><input id="start_time" type="date" value="2021-04-18"/></div>
+                <div><span class="time-span">end_time:</span><input id="end_time" type="date" value="2021-04-18"/></div>
+                <div><input value="search" id="search" type="button" onclick="search()" /></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div>attitude</div>
+                <div class="container-attitude">
+                    <svg width="100%" height="100%"></svg>
+                </div>
+
+                <div>learning</div>
+                <div class="container-learning">
+                    <svg width="100%" height="100%"></svg>
+                </div>
+
+
+            </td>
+        </tr>
+
+
+
+        </table>
+        
         <script type="text/javascript" src="content.js"></script>
+        
     </body>
 </html>
 
