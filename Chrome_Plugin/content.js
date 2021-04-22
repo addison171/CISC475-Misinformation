@@ -74,43 +74,6 @@ function GetTime() {
   });
 }
 
-//Stuff for firebase
-chrome.runtime.onMessage.addListener((msg, sender, resp) => {
-  if (msg.command == "post") {
-    var data = msg.data;
-    var classification = data.classification;
-    var id = data.id;
-    var website = data.website;
-    console.log("HEREEEEE");
-
-    try {
-      var newPost = firebase.database().ref('sites').push.set({
-        classification: classification,
-        id: id,
-        website: website
-      })
-    }
-    finally {
-      console.log("whatevs");
-    }
-  }
-})
-function sendData(website, id, classification){
-  chrome.runtime.sendMessage({command: "post", data: {classification: classification, website: website, id: id}},
-  (response) => {
-      console.log("hi");
-  });
-}
-
-
-
-// content.js
-function GetTime() {
-  $(document).ready(function () {
-      document.getElementById("clockDisplay").innerHTML = Date();
-  });
-}
-
 //function to get Current URL
 function getCurrentTabUrl(callback) {  
     var queryInfo = {
@@ -130,38 +93,74 @@ function getCurrentTabUrl(callback) {
   }
   //---------------------------------------------------------------------
   //function to set id to show in the html
-  function renderURL(url, domain, title) {
+  function renderURL(url, domain, title , attitude, learning, count, allcount) {
     document.getElementById('urlDisplay').textContent = url;
     document.getElementById('domainDisplay').textContent = domain;
     document.getElementById('titleDisplay').textContent = title;
-  }
-  function renderdomain(statusText) {
-    document.getElementById('domainDisplay').textContent = statusText;
-  }
+
+    if(attitude == "" || attitude == null) {
+
+        document.getElementById('kownDisplay').textContent = "unknown website"
+
+    } else {
+       // already vistor
+       document.getElementById('kownDisplay').textContent = ((count/allcount) * 100) + "% of our users who visit this site have labeled this site as " + attitude
+       document.getElementById('kownDisplay').style="font-weight: bold"
 
 
-  //function to set id to show in the html
-  function getCurrentTabdomain(callback){
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      var tab = tabs[0];
-      var url = new URL(tab.url);
-      var domain = url.hostname;
-      callback(domain);
-      // `domain` now has a value like 'example.com'
-    });
-  }
-  //------------------------------------------------------------------------
-  /*
-  document.addEventListener('DOMContentLoaded', function() {
-    getCurrentTabUrl(function(url) {
-      renderURL(url); 
-    });
-  });
+       var a = document.getElementsByName("attitude");
+       for (var i=0; i<a.length; i++) {
+           if(a[i].value == attitude){
+             a[i].checked = "true";
+           }
+       }
+   
+       var a = document.getElementsByName("learning");
+       for (var i=0; i<a.length; i++) {
+           console.log(a[i].value);
+           console.log(learning);
+           if(a[i].value == learning){
+             
+             a[i].checked = "true";
+           }
+       }         
 
+    }
+
+
+  }
+  
 
   document.addEventListener('DOMContentLoaded', function() {
     getCurrentTabUrl(function(url,domain, title) {
-      renderURL(url,domain, title); 
+
+      console.log(url);
+
+      var XML = new XMLHttpRequest();
+      XML.onreadystatechange = function () {
+        if (XML.readyState == 4 && XML.status == 200) {
+      
+          
+          var response_data = JSON.parse(XML.responseText);
+          
+          var attitude = "";
+          var learning = "";
+          if(response_data["status"] == 0) {
+              attitude = response_data["attitude"]
+              learning = response_data["learning"]
+              count = response_data["count"]
+              allcount = response_data["allcount"]
+          }
+          renderURL(url,domain, title, attitude, learning, count, allcount);
+        } 
+      }
+      console.log(url);
+      XML.open('GET', 'http://localhost:3001/api/v1/hostinfo?host='+domain, true)
+      //XML.send("uuid="+uuid+"&time="+time+"&host="+host+"&url="+url+"&title="+title+"&link="+link+"&attitude="+attitude+"&learning="+learning);
+      XML.send() 
+  
+      
+       
     });
   });
 
@@ -172,7 +171,7 @@ $(document).ready(function() {
     GetTime();
     setInterval( GetTime, 1000 );
 });
-*/
+
 // generate a unique id
 
 const generateID = () =>
@@ -186,10 +185,6 @@ btnGenerate.addEventListener('click', () => {
   generateIDTXT.value = generateID();
 });
 
-
-const btnSubmit = document.getElementById('')
-
-=======
 
 document.getElementById("search").addEventListener("click", function() {
 
@@ -397,4 +392,3 @@ document.getElementById("search").addEventListener("click", function() {
 
   
 });
-

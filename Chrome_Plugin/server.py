@@ -150,6 +150,61 @@ def learning():
 
 
 
+@app.route('/api/v1/hostinfo', methods=['GET'])
+def hostinfo():
+    result = {"status":-1, "msg":"error"}
+    if request.method == 'GET':
+        host = request.args.get('host', '')
+        if("" == host):
+
+            result["msg"] = "param error"
+        else:
+
+            
+            conn = sqlite3.connect("sample.db")
+            try:
+                
+
+
+                cur = conn.cursor()
+
+                sql = "select count(id) from DATA"
+                cursor = cur.execute(sql) 
+                for row in cursor:
+                    result["allcount"] = row[0]   
+                    break         
+
+                sql = 'select attitude, learning, count(id) from DATA where host=\"' + host+ '\"'
+                print sql
+                cursor = cur.execute(sql)
+                for row in cursor:
+                    print row
+                    result["status"] = 0
+                    result["msg"] = "success"
+                    result["attitude"] = row[0]
+                    result["learning"] = row[1]
+                    result["count"] = row[2]
+                    break
+               
+            except Exception as e:
+                print('There was some kind of error:\n\n' + str(e))
+                result["msg"] = "search db error"
+            finally:
+                conn.close()
+
+    else:
+
+        result["msg"] = "not support POST"
+
+    res = make_response(json.dumps(result))
+    res.headers['Access-Control-Allow-Origin'] = '*'
+    res.headers['Content-Type'] = 'application/json'
+
+    return res
+
+
+
+
 
 if  __name__  ==  '__main__':
 
