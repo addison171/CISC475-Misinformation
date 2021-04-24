@@ -174,7 +174,7 @@ def hostinfo():
                     result["allcount"] = row[0]   
                     break         
 
-                sql = 'select attitude, learning, count(id) from DATA where host=\"' + host+ '\"'
+                sql = 'select attitude, learning, articlelabel, count(id) from DATA where host=\"' + host+ '\"'
                 print sql
                 cursor = cur.execute(sql)
                 for row in cursor:
@@ -183,7 +183,8 @@ def hostinfo():
                     result["msg"] = "success"
                     result["attitude"] = row[0]
                     result["learning"] = row[1]
-                    result["count"] = row[2]
+                    result["count"] = row[3]
+                    result["articlelabel"] = row[2]
                     break
                
             except Exception as e:

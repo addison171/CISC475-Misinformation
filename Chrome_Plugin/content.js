@@ -24,6 +24,8 @@ document.getElementById("submit").addEventListener("click", function() {
     var url = $("#urlDisplay").html();
     var title = $("#titleDisplay").html();
     var link = $("#link").val();
+    var Reason = $("#Reason").val();
+
 
 
     var attitude = "";
@@ -42,12 +44,24 @@ document.getElementById("submit").addEventListener("click", function() {
         }
     }    
 
-    if(uuid == "" || time == "" || host == "" || url == "" || title == "" || link == "" || attitude == "" || learning == "") {
+    var articlelabel = "";
+    var a = document.getElementsByName("articlelabel");
+    for (var i=0; i<a.length; i++) {
+        if(a[i].checked){
+          articlelabel = a[i].value;
+        }
+    }    
+
+    if(uuid == "" || time == "" || host == "" || url == "" 
+        || title == "" || link == "" || attitude == "" 
+        || learning == "" || Reason == "" || articlelabel == "") {
         alert("uuid or time or host or url or title or link or attitude or learning is null");
         return;
     }
 
-    var data = {"uuid": uuid, "time" : time,"host":host, "url":url, "title":title,"link":link,"attitude":attitude,"learning":learning};
+    var data = {"uuid": uuid, "time" : time,"host":host, "url":url, 
+        "title":title,"link":link,"attitude":attitude,
+        "learning":learning, "Reason":Reason, "articlelabel":articlelabel};
 
     var XML = new XMLHttpRequest();
     XML.onreadystatechange = function () {
@@ -93,7 +107,7 @@ function getCurrentTabUrl(callback) {
   }
   //---------------------------------------------------------------------
   //function to set id to show in the html
-  function renderURL(url, domain, title , attitude, learning, count, allcount) {
+  function renderURL(url, domain, title , attitude, learning, count, allcount, articlelabel) {
     document.getElementById('urlDisplay').textContent = url;
     document.getElementById('domainDisplay').textContent = domain;
     document.getElementById('titleDisplay').textContent = title;
@@ -101,11 +115,15 @@ function getCurrentTabUrl(callback) {
     if(attitude == "" || attitude == null) {
 
         document.getElementById('kownDisplay').textContent = "unknown website"
+        document.getElementById('kownacticleDisplay').textContent = "unknown website"
 
     } else {
        // already vistor
        document.getElementById('kownDisplay').textContent = ((count/allcount) * 100) + "% of our users who visit this site have labeled this site as " + attitude
        document.getElementById('kownDisplay').style="font-weight: bold"
+
+       document.getElementById('kownacticleDisplay').textContent = ((count/allcount) * 100) + "% of our users who visit this site have labeled this site as " + attitude + ", acticle as " + articlelabel
+       document.getElementById('kownacticleDisplay').style="font-weight: bold"
 
 
        var a = document.getElementsByName("attitude");
@@ -120,6 +138,16 @@ function getCurrentTabUrl(callback) {
            console.log(a[i].value);
            console.log(learning);
            if(a[i].value == learning){
+             
+             a[i].checked = "true";
+           }
+       }   
+
+       var a = document.getElementsByName("articlelabel");
+       for (var i=0; i<a.length; i++) {
+           console.log(a[i].value);
+           console.log(learning);
+           if(a[i].value == articlelabel){
              
              a[i].checked = "true";
            }
@@ -150,8 +178,9 @@ function getCurrentTabUrl(callback) {
               learning = response_data["learning"]
               count = response_data["count"]
               allcount = response_data["allcount"]
+              articlelabel = response_data["articlelabel"]
           }
-          renderURL(url,domain, title, attitude, learning, count, allcount);
+          renderURL(url,domain, title, attitude, learning, count, allcount, articlelabel);
         } 
       }
       console.log(url);

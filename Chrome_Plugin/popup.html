@@ -108,9 +108,9 @@
         <td>
         <div>
             <h2 >Attitude</h2>
-        <p><font size="3"><input checked="true" id="misinformation" name="attitude" type="radio" value="Misinformation"/>Misinformation</font></p>
-        <p><font size="3"><input id="real" name="attitude" type="radio" value="Real"/>Real</font></p>
-            <p><font size="3"><input id="unlabeled" name="attitude" type="radio" value="Unlabeled"/>Unlabeled</font></p>
+        <p><font size="3"><input checked="true" id="misinformation" name="attitude" type="radio" value="news"/>news</font></p>
+        <p><font size="3"><input id="real" name="attitude" type="radio" value="satire"/>satire</font></p>
+            <p><font size="3"><input id="unlabeled" name="attitude" type="radio" value="misinformation"/>misinformation</font></p>
 
             <h2 >leaning </h2>
                 <p><font size="3"><input checked="true" id="Very conservative" name="learning" type="radio" value="Very conservative"/>Very conservative</font></p>
@@ -122,6 +122,38 @@
         </div>
         </td>
         </tr>
+
+
+        <tr>
+            <th><font size ="4">an unknown article in the website?</font></th>
+        </tr>
+        <tr>
+        <td>
+        <div>
+        <p><font size="3"><input checked="true" id="misinformation" name="articlelabel" type="radio" value="True"/>True</font></p>
+        <p><font size="3"><input id="real" name="articlelabel" type="radio" value="Mixed"/>Mixed</font></p>
+            <p><font size="3"><input id="unlabeled" name="articlelabel" type="radio" value="False"/>False</font></p>
+
+        </div>
+        </td>
+        </tr>
+
+        <tr>
+            <th><font size ="4">Reason</font></th>
+        </tr>
+        <tr>
+            <td><input type="text" id ="Reason" name="Reason" /></td>
+        </tr>
+
+        <tr>
+            <th><font size ="4">known website && known article</font></th>
+        </tr>
+        <tr>
+            <td id='kownacticleDisplay', class='container'>
+
+            </td>
+        </tr>        
+
 
    
         <tr>
