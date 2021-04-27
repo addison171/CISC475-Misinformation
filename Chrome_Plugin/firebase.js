@@ -20,9 +20,10 @@
           var classification = data.classification;
           var id = data.id;
           var leaning = data.leaning;
+          var website = data.website;
 
           try{
-              var newPost = firebase.database().ref('sites/Hello').set({
+              var newPost = firebase.database().ref('sites/'+website).set({
                   Classification: classification,
                   ID: id,
                   Leaning:leaning
