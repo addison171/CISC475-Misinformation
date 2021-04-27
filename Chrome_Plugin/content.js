@@ -6,19 +6,20 @@ function GetTime() {
 }
 
 //Stuff for firebase
+/*
 chrome.runtime.onMessage.addListener((msg, sender, resp) => {
   if (msg.command == "post") {
     var data = msg.data;
     var classification = data.classification;
     var id = data.id;
-    var website = data.website;
+    var leaning = data.leaning;
     console.log("HEREEEEE");
 
     try {
-      var newPost = firebase.database().ref('sites').push.set({
+      var newPost = firebase.database().ref('sites/Hello').push.set({
         classification: classification,
         id: id,
-        website: website
+        leaning: leaning
       })
     }
     finally {
@@ -26,10 +27,11 @@ chrome.runtime.onMessage.addListener((msg, sender, resp) => {
     }
   }
 })
-function sendData(website, id, classification){
-  chrome.runtime.sendMessage({command: "post", data: {classification: classification, website: website, id: id}},
+*/
+function sendData(leaning, id, classification){
+  chrome.runtime.sendMessage({command: "post", data: {classification: classification, leaning: leaning, id: id}},
   (response) => {
-      console.log("hi");
+    console.log("hi");
   });
 }
 
@@ -107,7 +109,6 @@ const copy = document.getElementById('copy');
 
 btnGenerate.addEventListener('click', () => {
   generateIDTXT.value = generateID();
+  sendData('123','123','123');
 });
-
-const btnSubmit = document.getElementById('')
 
