@@ -97,8 +97,8 @@ chrome.runtime.onMessage.addListener((msg, sender, resp) => {
   }
 })
 */
-function sendData(leaning, id, classification, website){
-  chrome.runtime.sendMessage({command: "post", data: {classification: classification, leaning: leaning, id: id, website: website}},
+function sendData(leaning, id, classification, website, date){
+  chrome.runtime.sendMessage({command: "post", data: {classification: classification, leaning: leaning, id: id, website: website, date:date}},
   (response) => {
     console.log("hi");
   });
@@ -186,6 +186,16 @@ const copy = document.getElementById('copy');
 
 btnGenerate.addEventListener('click', () => {
   generateIDTXT.value = generateID();
-  sendData('Facist','123','Misinformation', 'URL');
+  //sendData('conservative',generateIDTXT.value,'real', 'CNN');
 });
 
+const btnSubmit = document.getElementById('submit');
+
+btnSubmit.addEventListener('click', () => {
+  var website = document.getElementById('urlDisplay').textContent;
+  console.log(website);
+  //var regex = /[.$#/[]]/g;
+  website = website.replace('.', '');
+  console.log(website);
+  sendData('conservative',generateIDTXT.value,'real', website, document.getElementById("clockDisplay").innerHTML);
+});

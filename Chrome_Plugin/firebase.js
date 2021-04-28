@@ -21,18 +21,22 @@
           var id = data.id;
           var leaning = data.leaning;
           var website = data.website;
-
+          var date = data.date;
           try{
-              var newPost = firebase.database().ref('sites/'+website).set({
+              var newPost = firebase.database().ref('sites/'+website +'/'+id).set({
                   Classification: classification,
-                  ID: id,
-                  Leaning:leaning
+                  Leaning:leaning,
+                  Date:date
               })
           }
           finally{
               console.log("whatevs");
           }
-          resp({});
-          return true;
+
       }
+      else if(msg.command=="query"){
+        console.log("query");
+      }
+      resp({});
+      return true;
   })
