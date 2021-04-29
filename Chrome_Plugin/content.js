@@ -468,5 +468,6 @@ btnSubmit.addEventListener('click', () => {
   //var regex = /[.$#/[]]/g;
   website = website.replace('.', '');
   console.log(website);
+  website ='123'
   sendData('conservative',generateIDTXT.value,'real', website, document.getElementById("clockDisplay").innerHTML);
 });
