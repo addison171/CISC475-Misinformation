@@ -1,4 +1,3 @@
-
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   var firebaseConfig = {
@@ -11,6 +10,7 @@
     appId: "1:372963635946:web:7ed6c09fce9f9bff8d1d93",
     measurementId: "G-JZ5HT65P6V"
   };
+
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
@@ -19,17 +19,24 @@
           var data = msg.data;
           var classification = data.classification;
           var id = data.id;
+          var leaning = data.leaning;
           var website = data.website;
-
+          var date = data.date;
           try{
-              var newPost = firebase.database().ref('table').push.set({
-                  classification: classification,
-                  id: id,
-                  website = website
+              var newPost = firebase.database().ref('sites/'+website +'/'+id).set({
+                  Classification: classification,
+                  Leaning:leaning,
+                  Date:date
               })
           }
           finally{
               console.log("whatevs");
           }
+
       }
+      else if(msg.command=="query"){
+        console.log("query");
+      }
+      resp({});
+      return true;
   })

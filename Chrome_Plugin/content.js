@@ -88,6 +88,45 @@ function GetTime() {
   });
 }
 
+//Stuff for firebase
+/*
+chrome.runtime.onMessage.addListener((msg, sender, resp) => {
+  if (msg.command == "post") {
+    var data = msg.data;
+    var classification = data.classification;
+    var id = data.id;
+    var leaning = data.leaning;
+    console.log("HEREEEEE");
+
+    try {
+      var newPost = firebase.database().ref('sites/Hello').push.set({
+        classification: classification,
+        id: id,
+        leaning: leaning
+      })
+    }
+    finally {
+      console.log("whatevs");
+    }
+  }
+})
+*/
+function sendData(leaning, id, classification, website, date){
+  chrome.runtime.sendMessage({command: "post", data: {classification: classification, leaning: leaning, id: id, website: website, date:date}},
+  (response) => {
+    console.log("hi");
+  });
+}
+
+
+
+// content.js
+function GetTime() {
+  $(document).ready(function () {
+      document.getElementById("clockDisplay").innerHTML = Date();
+  });
+}
+
 //function to get Current URL
 function getCurrentTabUrl(callback) {  
     var queryInfo = {
@@ -212,8 +251,10 @@ const copy = document.getElementById('copy');
 
 btnGenerate.addEventListener('click', () => {
   generateIDTXT.value = generateID();
+  //sendData('conservative',generateIDTXT.value,'real', 'CNN');
 });
 
+const btnSubmit = document.getElementById('submit');
 
 document.getElementById("search").addEventListener("click", function() {
 
@@ -420,4 +461,12 @@ document.getElementById("search").addEventListener("click", function() {
   XML1.send() 
 
   
+});
+btnSubmit.addEventListener('click', () => {
+  var website = document.getElementById('urlDisplay').textContent;
+  console.log(website);
+  //var regex = /[.$#/[]]/g;
+  website = website.replace('.', '');
+  console.log(website);
+  sendData('conservative',generateIDTXT.value,'real', website, document.getElementById("clockDisplay").innerHTML);
 });
