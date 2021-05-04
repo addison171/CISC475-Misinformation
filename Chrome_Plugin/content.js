@@ -240,18 +240,27 @@ $(document).ready(function() {
     setInterval( GetTime, 1000 );
 });
 
-// generate a unique id
-
 const generateID = () =>
   Date.now().toString(Math.floor(Math.random() * 20) + 17);
-  
+
 const btnGenerate = document.getElementById('generateID');
 const generateIDTXT = document.getElementById('generateidtxt');
 const copy = document.getElementById('copy');
 
 btnGenerate.addEventListener('click', () => {
-  generateIDTXT.value = generateID();
-  //sendData('conservative',generateIDTXT.value,'real', 'CNN');
+  chrome.storage.sync.get('userid', function(items) {
+    var userid = items.userid;
+    if(userid){
+      console.log(userid);
+    }
+    else {
+        userid = generateID();
+        chrome.storage.sync.set({userid: userid}, function() {
+          console.log(userid);
+        });
+      }
+      generateIDTXT.value = userid;
+    })
 });
 
 const btnSubmit = document.getElementById('submit');
