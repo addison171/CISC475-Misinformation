@@ -17,18 +17,19 @@
   chrome.runtime.onMessage.addListener((msg, sender, resp) => {
       if(msg.command=="post"){
           var data = msg.data;
+          var reason = data.reason; // added
           var classification = data.classification;
           var id = data.id;
           var leaning = data.leaning;
           var website = data.website;
           var date = data.date;
-          var reason = data.reason; // added
+
           try{
               var newPost = firebase.database().ref('sites/'+website +'/'+id).set({
                   Classification: classification,
                   Leaning:leaning,
                   Date:date,
-                  Reason: reason // added
+                  Reason:reason // added
               })
           }
           finally{

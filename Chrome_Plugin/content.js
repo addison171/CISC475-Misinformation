@@ -481,10 +481,11 @@ document.getElementById("search").addEventListener("click", function() {
 });
 btnSubmit.addEventListener('click', () => {
   var website = document.getElementById('urlDisplay').textContent;
+  var reas = document.getElementById('Reason').textContent;
   console.log(website);
   //var regex = /[.$#/[]]/g;
   website = website.replace('.', '');
   console.log(website);
   website ='123'
-  sendData('conservative',generateIDTXT.value,'real', website, document.getElementById("clockDisplay").innerHTML, Reason);
+  sendData('conservative',generateIDTXT.value,'real', website, document.getElementById("clockDisplay").innerHTML, reas);
 });
