@@ -51,7 +51,15 @@ document.getElementById("submit").addEventListener("click", function() {
           articlelabel = a[i].value;
         }
     }    
-
+// Added ---------------------------
+    var reasoning = "";
+    var a = document.getElementsByName("reasoning");
+    for (var i=0; i<a.length; i++) {
+      if(a[i].checked){
+        articlelabel = a[i].value;
+      }
+    }
+//-------------------------------------
     if(uuid == "" || time == "" || host == "" || url == "" 
         || title == "" || link == "" || attitude == "" 
         || learning == "" || Reason == "" || articlelabel == "") {
@@ -111,8 +119,8 @@ chrome.runtime.onMessage.addListener((msg, sender, resp) => {
   }
 })
 */
-function sendData(leaning, id, classification, website, date){
-  chrome.runtime.sendMessage({command: "post", data: {classification: classification, leaning: leaning, id: id, website: website, date:date}},
+function sendData(leaning, id, classification, website, date, reason){ // added reason
+  chrome.runtime.sendMessage({command: "post", data: {classification: classification, leaning: leaning, id: id, website: website, date:date, reason: reason}},
   (response) => {
     console.log("hi");
   });
@@ -478,5 +486,5 @@ btnSubmit.addEventListener('click', () => {
   website = website.replace('.', '');
   console.log(website);
   website ='123'
-  sendData('conservative',generateIDTXT.value,'real', website, document.getElementById("clockDisplay").innerHTML);
+  sendData('conservative',generateIDTXT.value,'real', website, document.getElementById("clockDisplay").innerHTML, Reason);
 });

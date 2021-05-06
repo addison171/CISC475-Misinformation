@@ -22,11 +22,13 @@
           var leaning = data.leaning;
           var website = data.website;
           var date = data.date;
+          var reason = data.reason; // added
           try{
               var newPost = firebase.database().ref('sites/'+website +'/'+id).set({
                   Classification: classification,
                   Leaning:leaning,
-                  Date:date
+                  Date:date,
+                  Reason: reason // added
               })
           }
           finally{
