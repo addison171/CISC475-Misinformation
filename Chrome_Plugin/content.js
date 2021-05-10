@@ -1,5 +1,21 @@
 // content.js
 
+var realURL; 
+
+chrome.storage.sync.get('userid', function(items) {
+  var userid = items.userid;
+  if(userid){
+    console.log(userid);
+  }
+  else {
+      userid = generateID();
+      chrome.storage.sync.set({userid: userid}, function() {
+        console.log(userid);
+      });
+    }
+    generateIDTXT.value = userid;
+  })
+
 Date.prototype.Format = function (fmt) { 
   var o = {
       "M+": this.getMonth() + 1, 
@@ -21,13 +37,15 @@ document.getElementById("submit").addEventListener("click", function() {
     var uuid = $("#generateidtxt").val();
     var time = $("#clockDisplay").html();
     var host = $("#domainDisplay").html();
-    var url = $("#urlDisplay").html();
+    //var url = $("#urlDisplay").html();
     var title = $("#titleDisplay").html();
     var link = $("#link").val();
     var Reason = $("#Reason").val();
-
-
-
+    var realURL;
+    var url = getCurrentTabUrl(function(url,domain, title) {
+      realURL = url;
+    });
+    var url = realURL;
     var attitude = "";
     var a = document.getElementsByName("attitude");
     for (var i=0; i<a.length; i++) {
@@ -64,7 +82,7 @@ document.getElementById("submit").addEventListener("click", function() {
         || title == "" || link == "" || attitude == "" 
         || learning == "" || Reason == "" || articlelabel == "") {
         alert("uuid or time or host or url or title or link or attitude or learning is null");
-        return;
+        // return;
     }
 
     var data = {"uuid": uuid, "time" : time,"host":host, "url":url, 
@@ -88,6 +106,7 @@ document.getElementById("submit").addEventListener("click", function() {
     XML.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //XML.send("uuid="+uuid+"&time="+time+"&host="+host+"&url="+url+"&title="+title+"&link="+link+"&attitude="+attitude+"&learning="+learning);
     XML.send(JSON.stringify(data))
+    return true;
 });
 
 function GetTime() {
@@ -96,29 +115,6 @@ function GetTime() {
   });
 }
 
-//Stuff for firebase
-/*
-chrome.runtime.onMessage.addListener((msg, sender, resp) => {
-  if (msg.command == "post") {
-    var data = msg.data;
-    var classification = data.classification;
-    var id = data.id;
-    var leaning = data.leaning;
-    console.log("HEREEEEE");
-
-    try {
-      var newPost = firebase.database().ref('sites/Hello').push.set({
-        classification: classification,
-        id: id,
-        leaning: leaning
-      })
-    }
-    finally {
-      console.log("whatevs");
-    }
-  }
-})
-*/
 function sendData(leaning, id, classification, website, date, reason){ // added reason
   chrome.runtime.sendMessage({command: "post", data: {classification: classification, leaning: leaning, id: id, website: website, date:date, reason: reason}},
   (response) => {
@@ -155,7 +151,8 @@ function getCurrentTabUrl(callback) {
   //---------------------------------------------------------------------
   //function to set id to show in the html
   function renderURL(url, domain, title , attitude, learning, count, allcount, articlelabel) {
-    document.getElementById('urlDisplay').textContent = url;
+    console.log("renderURL: "+ url);
+    document.getElementById('urlDisplay').innerHTML = url;
     document.getElementById('domainDisplay').textContent = domain;
     document.getElementById('titleDisplay').textContent = title;
 
@@ -210,6 +207,7 @@ function getCurrentTabUrl(callback) {
     getCurrentTabUrl(function(url,domain, title) {
 
       console.log(url);
+      realURL = url;
 
       var XML = new XMLHttpRequest();
       XML.onreadystatechange = function () {
@@ -227,6 +225,7 @@ function getCurrentTabUrl(callback) {
               allcount = response_data["allcount"]
               articlelabel = response_data["articlelabel"]
           }
+          console.log("Prerend: " + URL);
           renderURL(url,domain, title, attitude, learning, count, allcount, articlelabel);
         } 
       }
@@ -238,6 +237,7 @@ function getCurrentTabUrl(callback) {
       
        
     });
+    return true;
   });
 
   
@@ -269,6 +269,7 @@ btnGenerate.addEventListener('click', () => {
       }
       generateIDTXT.value = userid;
     })
+    return true;
 });
 
 const btnSubmit = document.getElementById('submit');
@@ -476,16 +477,35 @@ document.getElementById("search").addEventListener("click", function() {
   XML1.open('GET', 'http://localhost:3001/api/v1/learning?start_time='+start_time+'&end_time='+end_time, true)
   //XML.send("uuid="+uuid+"&time="+time+"&host="+host+"&url="+url+"&title="+title+"&link="+link+"&attitude="+attitude+"&learning="+learning);
   XML1.send() 
-
+  return true;
   
 });
 btnSubmit.addEventListener('click', () => {
-  var website = document.getElementById('urlDisplay').textContent;
-  var reas = document.getElementById('Reason').textContent;
+  var website = document.getElementById('urlDisplay').innerHTML + "a";
+  var reas = document.getElementById('Reason').value;
+  var leaning;
+  const politic = document.querySelectorAll('input[name="learning"]');
+  politic.forEach(function(lean) {
+    if(lean.checked){
+      leaning = lean.value;
+    }
+  });
+  console.log("leaning: " + leaning);
   console.log(website);
   //var regex = /[.$#/[]]/g;
-  website = website.replace('.', '');
-  console.log(website);
-  website ='123'
-  sendData('conservative',generateIDTXT.value,'real', website, document.getElementById("clockDisplay").innerHTML, reas);
+  //website = website.replace('.', '');
+  console.log("HUllo" +website);
+  console.log(reas);
+  website = realURL.replace("https://www.", "");
+  var index = website.indexOf("/");
+ // website = website.substr(0, index+1) + website.slice(index+1).replace('/', '-');
+ var output = website.split('/');
+ output = output.shift() + (output.length ? '/' + output.join('') : '');
+ website = output;
+  website = website.replace(".com", "");
+  website = website.replace(".", "");
+  console.log("this is the url:" + website);
+
+  sendData(leaning,generateIDTXT.value,'real', website, document.getElementById("clockDisplay").innerHTML, reas);
+  return true;
 });
