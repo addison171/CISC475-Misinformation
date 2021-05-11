@@ -217,6 +217,12 @@ function getCurrentTabUrl(callback) {
       $(document).ready(function () {
         document.getElementById("urlDisplay").innerHTML = url;
       });
+      $(document).ready(function () {
+        document.getElementById("domainDisplay").innerHTML = domain;
+      });
+      $(document).ready(function () {
+        document.getElementById("titleDisplay").innerHTML = title;
+      });
 
       var XML = new XMLHttpRequest();
       XML.onreadystatechange = function () {
