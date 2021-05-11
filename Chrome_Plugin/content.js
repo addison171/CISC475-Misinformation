@@ -2,6 +2,7 @@
 
 var realURL; 
 
+
 chrome.storage.sync.get('userid', function(items) {
   var userid = items.userid;
   if(userid){
@@ -115,7 +116,7 @@ function GetTime() {
   });
 }
 
-function sendData(leaning, id, classification, website, date, reason){ // added reason
+function sendData(leaning, id, classification, website, date, reason){ 
   chrome.runtime.sendMessage({command: "post", data: {classification: classification, leaning: leaning, id: id, website: website, date:date, reason: reason}},
   (response) => {
     console.log("hi");
@@ -152,7 +153,12 @@ function getCurrentTabUrl(callback) {
   //function to set id to show in the html
   function renderURL(url, domain, title , attitude, learning, count, allcount, articlelabel) {
     console.log("renderURL: "+ url);
+    $(document).ready(function () {
+      document.getElementById("urlDisplay").innerHTML = url;
+  });
     document.getElementById('urlDisplay').innerHTML = url;
+    document.getElementById('urlDisplay').textContent = url;
+
     document.getElementById('domainDisplay').textContent = domain;
     document.getElementById('titleDisplay').textContent = title;
 
@@ -205,16 +211,19 @@ function getCurrentTabUrl(callback) {
 
   document.addEventListener('DOMContentLoaded', function() {
     getCurrentTabUrl(function(url,domain, title) {
-
+      console.log("YES I AM HERE");
       console.log(url);
       realURL = url;
+      $(document).ready(function () {
+        document.getElementById("urlDisplay").innerHTML = url;
+      });
 
       var XML = new XMLHttpRequest();
       XML.onreadystatechange = function () {
-        if (XML.readyState == 4 && XML.status == 200) {
-      
+        if (this.readyState == 4 && this.status == 200) {
+          console.log("AND HEREEEEEEEE");
           
-          var response_data = JSON.parse(XML.responseText);
+        var response_data = JSON.parse(XML.responseText);
           
           var attitude = "";
           var learning = "";
@@ -245,6 +254,7 @@ function getCurrentTabUrl(callback) {
 
 $(document).ready(function() {
     GetTime();
+    //renderURL();
     setInterval( GetTime, 1000 );
 });
 
@@ -484,6 +494,13 @@ btnSubmit.addEventListener('click', () => {
   var website = document.getElementById('urlDisplay').innerHTML + "a";
   var reas = document.getElementById('Reason').value;
   var leaning;
+  var attitude;
+  const attitudeGet = document.querySelectorAll('input[name="attitude');
+  attitudeGet.forEach(function(att){
+    if(att.checked){
+      attitude = att.value;
+    }
+  });
   const politic = document.querySelectorAll('input[name="learning"]');
   politic.forEach(function(lean) {
     if(lean.checked){
@@ -506,6 +523,6 @@ btnSubmit.addEventListener('click', () => {
   website = website.replace(".", "");
   console.log("this is the url:" + website);
 
-  sendData(leaning,generateIDTXT.value,'real', website, document.getElementById("clockDisplay").innerHTML, reas);
+  sendData(leaning,generateIDTXT.value,attitude, website, document.getElementById("clockDisplay").innerHTML, reas);
   return true;
 });
