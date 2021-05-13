@@ -532,3 +532,5 @@ btnSubmit.addEventListener('click', () => {
   sendData(leaning,generateIDTXT.value,attitude, website, document.getElementById("clockDisplay").innerHTML, reas);
   return true;
 });
+
+

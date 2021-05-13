@@ -24,7 +24,8 @@
   "permissions": [
     "tabs",
     "contextMenus",
-    "storage"
+    "storage",
+    "history"
   ],
   "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com https://www.googletagmanager.com; object-src 'self'",
 
