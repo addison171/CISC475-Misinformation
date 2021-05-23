@@ -23,13 +23,12 @@
           var leaning = data.leaning;
           var website = data.website;
           var date = data.date;
-
           try{
               var newPost = firebase.database().ref('sites/'+website +'/'+id).set({
                   Classification: classification,
                   Leaning:leaning,
                   Date:date,
-                  Reason:reason // added
+                  Reason:reason 
               })
           }
           finally{
@@ -38,8 +37,21 @@
 
       }
       else if(msg.command=="query"){
-        console.log("query");
+        var data = msg.data;
+        var site = data.site;
+        var article = data.article;
+        var userid = data.userid;
+        try{
+          var ref = firebase.database().ref('sites/' + site + '/' + article + '/' + userid + '/Leaning');
+          ref.on('value', (snapshot) => {
+            resp({type: "result", status: "success", data: snapshot.val(), request: msg});
+          });
+        }
+        finally{
+          console.log("whatevs2");
+        }
       }
+      console.log("lsitner");
       resp({});
       return true;
   })

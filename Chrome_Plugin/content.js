@@ -82,7 +82,7 @@ document.getElementById("submit").addEventListener("click", function() {
     if(uuid == "" || time == "" || host == "" || url == "" 
         || title == "" || link == "" || attitude == "" 
         || learning == "" || Reason == "" || articlelabel == "") {
-        alert("uuid or time or host or url or title or link or attitude or learning is null");
+        //alert("uuid or time or host or url or title or link or attitude or learning is null");
         // return;
     }
 
@@ -120,6 +120,16 @@ function sendData(leaning, id, classification, website, date, reason){
   chrome.runtime.sendMessage({command: "post", data: {classification: classification, leaning: leaning, id: id, website: website, date:date, reason: reason}},
   (response) => {
     console.log("hi");
+  });
+}
+
+function retrieveData(site, article, userid){ 
+  chrome.runtime.sendMessage({command: "query", data: {site: site, article: article}},
+  (response) => {
+    console.log("response: "+ response.data)
+    $(document).ready(function () {
+      document.getElementById("knownacticleDisplay").innerHTML = response.data;
+  });
   });
 }
 
@@ -496,6 +506,7 @@ document.getElementById("search").addEventListener("click", function() {
   return true;
   
 });
+//TODO: clean up variables and such. This is ugly
 btnSubmit.addEventListener('click', () => {
   var website = document.getElementById('urlDisplay').innerHTML + "a";
   var reas = document.getElementById('Reason').value;
@@ -521,14 +532,18 @@ btnSubmit.addEventListener('click', () => {
   console.log(reas);
   website = realURL.replace("https://www.", "");
   var index = website.indexOf("/");
- // website = website.substr(0, index+1) + website.slice(index+1).replace('/', '-');
- var output = website.split('/');
- output = output.shift() + (output.length ? '/' + output.join('') : '');
- website = output;
+  // website = website.substr(0, index+1) + website.slice(index+1).replace('/', '-');
+  var output = website.split('/');
+  output = output.shift() + (output.length ? '/' + output.join('') : '');
+  website = output;
   website = website.replace(".com", "");
   website = website.replace(".", "");
   console.log("this is the url:" + website);
 
   sendData(leaning,generateIDTXT.value,attitude, website, document.getElementById("clockDisplay").innerHTML, reas);
+  var save = website.split('/');
+  console.log("save 0: " + save[0]);
+  console.log("2: " + save[1]);
+  retrieveData(save[0], save[1], generateIDTXT.value);
   return true;
 });
