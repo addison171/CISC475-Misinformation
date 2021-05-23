@@ -1,56 +1,107 @@
-    /*$("#button").click(function(e)){
-        e.preventDefault();
-        $.ajax({
-            type:"POST",url:"/",data:JSON.stringify({message:$("#messafe").val(),
-                }),
-        success:[function(){
-        alert('Record Inserted');
-    }],
-    error:[function(){
-    alert('Error Returned');
-    }]
+// --------------------------------------------------------------------
+// showing the top five websites visited today  
+
+function documentpop(divName, data) {
+    var popupDiv = document.getElementById(divName);
+  
+    var ul = document.createElement('ul');
+    popupDiv.appendChild(ul);
+  
+    for (var i = 0, ie = data.length; i < ie; ++i) {
+      var a = document.createElement('a');
+      a.href = data[i];
+      a.appendChild(document.createTextNode(data[i]));
+      a.addEventListener('click', onclickfunction);
+  
+      var li = document.createElement('li');
+      li.appendChild(a);
+  
+      ul.appendChild(li);
+    }
+  }
+
+function onclickfunction(event) {
+    chrome.tabs.create({
+      selected: true,
+      url: event.srcElement.href
     });
-    });*/
+    return false;
+  }
+  
+  
+  // Search history to find up to five links that a user has typed in,
+  
+  function buildlist(divName) {
+    var microsecondsPerDay = 1000 * 60 * 60 * 24 * 1;
+    var onedayago = (new Date).getTime() - microsecondsPerDay;
+  
+  
+    var numRequestsOutstanding = 0;
+  
+    chrome.history.search({
+        'text': '',              // Return every history item....
+        'startTime': onedayago  // that was accessed less than one week ago.
+      },
+      function(historyItems) {
+        // For each history item, get details on all visits.
+        for (var i = 0; i < historyItems.length; ++i) {
+          var url = historyItems[i].url;
+          var processVisitsWithUrl = function(url) {
+            
+            return function(visitItems) {
+              processVisits(url, visitItems);
+            };
+          };
+          chrome.history.getVisits({url: url}, processVisitsWithUrl(url));
+          numRequestsOutstanding++;
+        }
+        if (!numRequestsOutstanding) {
+          onAllVisitsProcessed();
+        }
+      });
+  
+  
+    
+    var urlToCount = {};
+  
 
-function renderTime(){
-    // Date
-    var mydate = new Date();
-    var year = mydate.getYear();
-        if (year<1000){
-            year += 1900;
+    var processVisits = function(url, visitItems) {
+      for (var i = 0, ie = visitItems.length; i < ie; ++i) {
+        // Ignore items unless the user typed the URL.
+        if (visitItems[i].transition != 'typed') {
+          continue;
         }
-    var day = mydate.getDay();
-    var month = mydate.getMonth();
-    var daym = mydate.getDate();
-    var dayarray = new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
-    var montharray = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
-    // Day end
-
-    // Time
-    var currentTime = new Date();
-    var h = currentTime.getHours();
-    var m = currentTime.getMinutes();
-    var s = currentTime.getSeconds();
-        if (h==24){
-            h=0;
+  
+        if (!urlToCount[url]) {
+          urlToCount[url] = 0;
         }
-        else if (h>12){
-            h = h-0;
-        }
-        if(h<10){
-            h = "0" + h;
-        }
-        if(m<10){
-            m = "0" + m;
-        }
-        if(s<10){
-            s = "0" + s;
-        }
-        var myClock = document.getElementById("clockDisplay");
-        myClock.textContent = "" +dayarray[day]+ " " +daym+ " " +montharray[month]+ " " +year+ " | " +h+ ":" +m+ ":" +s;
-        myClock.innerText = "" +dayarray[day]+ " " +daym+ " " +montharray[month]+ " " +year+ " | " +h+ ":" +m+ ":" +s;
-
-        setTimeout("renderTime()",1000);
-}
-
-renderTime();
+  
+        urlToCount[url]++;
+      }
+  
+    
+      if (!--numRequestsOutstanding) {
+        onAllVisitsProcessed();
+      }
+    };
+  
+    // This function is called when we have the final list of URls to display.
+    var onAllVisitsProcessed = function() {
+      // Get the top scorring urls.
+      urlArray = [];
+      for (var url in urlToCount) {
+        urlArray.push(url);
+      }
+  
+      // Sort the URLs by the number of times the user typed them.
+      urlArray.sort(function(a, b) {
+        return urlToCount[b] - urlToCount[a];
+      });
+  
+      documentpop(divName, urlArray.slice(0, 5));
+    };
+  }
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    buildlist("typedUrl_div");
+  });
