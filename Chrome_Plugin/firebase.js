@@ -13,8 +13,10 @@
 
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-
-  chrome.runtime.onMessage.addListener((msg, sender, resp) => {
+  
+  chrome.runtime.onMessage.addListener(
+    function(msg, sender, resp){
+      var check = 0;
       if(msg.command=="post"){
           var data = msg.data;
           var reason = data.reason; // added
@@ -41,17 +43,16 @@
         var site = data.site;
         var article = data.article;
         var userid = data.userid;
-        try{
-          var ref = firebase.database().ref('sites/' + site + '/' + article + '/' + userid + '/Leaning');
-          ref.on('value', (snapshot) => {
-            resp({type: "result", status: "success", data: snapshot.val(), request: msg});
+          //var ref = firebase.database().ref('sites/' + site + '/' + article + '/' + userid + '/Leaning');
+          var ref = firebase.database().ref('sites/' + site + '/' + article);
+          var lean;
+          ref.get().then((snapshot) => {
+            lean = snapshot.val();
+            resp({data: lean});
+            check = 1;
+          }).catch((error) => {
+            console.error(error);
           });
-        }
-        finally{
-          console.log("whatevs2");
-        }
       }
-      console.log("lsitner");
-      resp({});
       return true;
   })

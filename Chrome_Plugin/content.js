@@ -1,10 +1,12 @@
 // content.js
 
-var realURL; 
+var realURL;
+var realID; 
 
 
 chrome.storage.sync.get('userid', function(items) {
   var userid = items.userid;
+  realID = userid;
   if(userid){
     console.log(userid);
   }
@@ -124,12 +126,47 @@ function sendData(leaning, id, classification, website, date, reason){
 }
 
 function retrieveData(site, article, userid){ 
-  chrome.runtime.sendMessage({command: "query", data: {site: site, article: article}},
-  (response) => {
-    console.log("response: "+ response.data)
+  chrome.runtime.sendMessage({command: "query", data: {site: site, article: article, userid: userid}},
+  function(resp) {
+    console.log('response:  ' + resp.data);
+    console.log(Object.values(resp.data)[0].Classification);
     $(document).ready(function () {
-      document.getElementById("knownacticleDisplay").innerHTML = response.data;
-  });
+      if(resp.data){
+        var consCount = 0;
+        var libCount = 0;
+        var centCount = 0;
+        Object.values(resp.data).forEach(element => {
+          if(element.Leaning == "Liberal"||element.Leaning == "Very Liberal"){
+            libCount++;
+          }
+          else if(element.Leaning == "Conservative"||element.Leaning == "Very conservative"){
+            consCount++;
+          }
+          else{
+            centCount++;
+          }
+        });
+        var type;
+        var percent;
+        if(libCount>consCount && libCount>centCount){
+          type = "Liberal";
+          percent = (libCount/(libCount+centCount+consCount))*100;
+        }
+        else if(libCount<consCount && consCount>centCount){
+          type = "Conservative";
+          percent = (consCount/(libCount+centCount+consCount))*100;
+        }
+        else{
+          type = "Centrist";
+          percent = (centCount/(libCount+centCount+consCount))*100;
+        }
+        document.getElementById("kownDisplay").textContent = "This article has been determined to be: " + type + " by " + Math.round(percent) + "% of the ratings"; 
+        //document.getElementById("kownDisplay").textContent = "Conservative: "+ consCount + "\nLiberal: "+ libCount + "\nCentrist: "+ centCount; 
+      } 
+      else{
+        document.getElementById("kownDisplay").textContent = "This article has not been rated yet";
+      }
+    });
   });
 }
 
@@ -144,28 +181,34 @@ function GetTime() {
 
 //function to get Current URL
 function getCurrentTabUrl(callback) {  
-    var queryInfo = {
-      active: true, 
-      currentWindow: true
-    };
-  
-    chrome.tabs.query(queryInfo, function(tabs) {
-      var tab = tabs[0]; 
-      var url = tab.url;
-      var url_obj = new URL(tab.url);
-      var domain = url_obj.hostname;
-      var title = tab.title;
-      
-      callback(url, domain, title);
-    });
-  }
-  //---------------------------------------------------------------------
+  var queryInfo = {
+    active: true, 
+    currentWindow: true
+  };
+
+  chrome.tabs.query(queryInfo, function(tabs) {
+    var tab = tabs[0]; 
+    var url = tab.url;
+    var url_obj = new URL(tab.url);
+    var domain = url_obj.hostname;
+    var title = tab.title;
+    
+    callback(url, domain, title);
+  });
+}
+
+//---------------------------------------------------------------------
   //function to set id to show in the html
   function renderURL(url, domain, title , attitude, learning, count, allcount, articlelabel) {
     console.log("renderURL: "+ url);
     $(document).ready(function () {
       document.getElementById("urlDisplay").innerHTML = url;
-  });
+    });
+
+    website = stripURL(website);
+    var save = website.split('/');
+    retrieveData(save[0], save[1], generateIDTXT.value);
+
     document.getElementById('urlDisplay').innerHTML = url;
     document.getElementById('urlDisplay').textContent = url;
 
@@ -224,6 +267,10 @@ function getCurrentTabUrl(callback) {
       console.log("YES I AM HERE");
       console.log(url);
       realURL = url;
+      website = stripURL(url);
+      var save = website.split('/');
+      retrieveData(save[0], save[1], realID);
+
       $(document).ready(function () {
         document.getElementById("urlDisplay").innerHTML = url;
       });
@@ -506,6 +553,21 @@ document.getElementById("search").addEventListener("click", function() {
   return true;
   
 });
+
+function stripURL(website){
+  website = realURL.replace("https://www.", "");
+  var index = website.indexOf("/");
+  // website = website.substr(0, index+1) + website.slice(index+1).replace('/', '-');
+  var output = website.split('/');
+  output = output.shift() + (output.length ? '/' + output.join('') : '');
+  website = output;
+  website = website.replace(".com", "");
+  website = website.replace(".", "");
+  console.log("this is the url:" + website);
+  return website;
+}
+
+
 //TODO: clean up variables and such. This is ugly
 btnSubmit.addEventListener('click', () => {
   var website = document.getElementById('urlDisplay').innerHTML + "a";
@@ -530,21 +592,17 @@ btnSubmit.addEventListener('click', () => {
   //website = website.replace('.', '');
   console.log("HUllo" +website);
   console.log(reas);
-  website = realURL.replace("https://www.", "");
-  var index = website.indexOf("/");
-  // website = website.substr(0, index+1) + website.slice(index+1).replace('/', '-');
-  var output = website.split('/');
-  output = output.shift() + (output.length ? '/' + output.join('') : '');
-  website = output;
-  website = website.replace(".com", "");
-  website = website.replace(".", "");
-  console.log("this is the url:" + website);
-
+  
+  website = stripURL(website);
   sendData(leaning,generateIDTXT.value,attitude, website, document.getElementById("clockDisplay").innerHTML, reas);
   var save = website.split('/');
   console.log("save 0: " + save[0]);
   console.log("2: " + save[1]);
-  retrieveData(save[0], save[1], generateIDTXT.value);
+  $(document).ready(function() {
+    retrieveData(save[0], save[1], generateIDTXT.value);
+    //document.getElementById("kownDisplay").textContent = response.data;
+  });
+  
   return true;
 });
 

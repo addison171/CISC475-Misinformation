@@ -83,15 +83,15 @@
 
 
         <tr>
-            <th><font size ="4">Referring Site</font></th>
+            <th hidden><font size ="4">Referring Site</font> </th>
         </tr>
         <tr>
-            <td><input type="text" id ="link" name="name" required minlength="4" maxlength="8" size="50"></td>
+            <td hidden><input type="text" id ="link" name="name" required minlength="4" maxlength="8" size="50"></td>
         </tr>
 
 
         <tr>
-            <th><font size ="4">Known or Unknown Website</font></th>
+            <th><font size ="4">Political Leaning</font></th>
         </tr>
         <tr>
             <td id='kownDisplay', class='container'>
@@ -123,12 +123,12 @@
         </tr>
 
 
-        <tr>
+        <tr hidden>
             <th><font size ="4">An Unknown Article in the Website?</font></th>
         </tr>
-        <tr>
+        <tr hidden>
         <td>
-        <div>
+        <div >
         <p><font size="3"><input checked="true" id="misinformation" name="articlelabel" type="radio" value="True"/>True</font></p>
         <p><font size="3"><input id="real" name="articlelabel" type="radio" value="Mixed"/>Mixed</font></p>
             <p><font size="3"><input id="unlabeled" name="articlelabel" type="radio" value="False"/>False</font></p>
@@ -143,10 +143,10 @@
            <p><td><input type="text" id ="Reason" name="Reason" /></td></p> 
         </tr>
 
-        <tr>
+        <tr hidden>
             <th><font size ="4">Known Website && Known Article</font></th>
         </tr>
-        <tr>
+        <tr hidden>
             <td id='kownacticleDisplay', class='container'>
 
             </td>
@@ -166,7 +166,7 @@
 
 
         <!-- show donut or linear slider-->
-        <table>
+        <table hidden>
             <caption><h1><b><i>graphs</i></b></h1></caption>
         <tr>
             <td>
@@ -176,7 +176,7 @@
             </td>
         </tr>
 
-        <tr>
+        <tr hidden>
             <td>
                 <div>attitude</div>
                 <div class="container-attitude">
