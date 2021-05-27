@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="efc02c7c-f098-4ea2-87db-2b875b29207d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Chrome_Plugin/popup.html" beforeDir="false" afterPath="$PROJECT_DIR$/Chrome_Plugin/popup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chrome_Plugin/options.html" beforeDir="false" afterPath="$PROJECT_DIR$/Chrome_Plugin/options.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
