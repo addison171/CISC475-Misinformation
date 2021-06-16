@@ -8,7 +8,7 @@ chrome.storage.sync.get('userid', function(items) {
   var userid = items.userid;
   realID = userid;
   if(userid){
-    console.log(userid);
+    console.log("UserId: " + userid);
   }
   else {
       userid = generateID();
@@ -57,11 +57,11 @@ document.getElementById("submit").addEventListener("click", function() {
         }
     }
 
-    var learning = "";
-    var a = document.getElementsByName("learning");
+    var leaning = "";
+    var a = document.getElementsByName("leaning");
     for (var i=0; i<a.length; i++) {
         if(a[i].checked){
-          learning = a[i].value;
+          leaning = a[i].value;
         }
     }    
 
@@ -90,7 +90,7 @@ document.getElementById("submit").addEventListener("click", function() {
 
     var data = {"uuid": uuid, "time" : time,"host":host, "url":url, 
         "title":title,"link":link,"attitude":attitude,
-        "learning":learning, "Reason":Reason, "articlelabel":articlelabel};
+        "learning":leaning, "Reason":Reason, "articlelabel":articlelabel};
 
     var XML = new XMLHttpRequest();
     XML.onreadystatechange = function () {
@@ -108,7 +108,8 @@ document.getElementById("submit").addEventListener("click", function() {
     XML.open('POST', 'http://localhost:3001/', true)
     XML.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //XML.send("uuid="+uuid+"&time="+time+"&host="+host+"&url="+url+"&title="+title+"&link="+link+"&attitude="+attitude+"&learning="+learning);
-    XML.send(JSON.stringify(data))
+    //TODO: Comment out the send because this localhost code is missing from the directory
+    //XML.send(JSON.stringify(data))
     return true;
 });
 
@@ -121,52 +122,51 @@ function GetTime() {
 function sendData(leaning, id, classification, website, date, reason){ 
   chrome.runtime.sendMessage({command: "post", data: {classification: classification, leaning: leaning, id: id, website: website, date:date, reason: reason}},
   (response) => {
-    console.log("hi");
+    console.log("sendData(): Data successfully sent to server; received response");
   });
 }
 
 function retrieveData(site, article, userid){ 
   chrome.runtime.sendMessage({command: "query", data: {site: site, article: article, userid: userid}},
   function(resp) {
-    console.log('response:  ' + resp.data);
-    console.log(Object.values(resp.data)[0].Classification);
-    $(document).ready(function () {
-      if(resp.data){
-        var consCount = 0;
-        var libCount = 0;
-        var centCount = 0;
-        Object.values(resp.data).forEach(element => {
-          if(element.Leaning == "Liberal"||element.Leaning == "Very Liberal"){
-            libCount++;
-          }
-          else if(element.Leaning == "Conservative"||element.Leaning == "Very conservative"){
-            consCount++;
-          }
-          else{
-            centCount++;
-          }
-        });
-        var type;
-        var percent;
-        if(libCount>consCount && libCount>centCount){
-          type = "Liberal";
-          percent = (libCount/(libCount+centCount+consCount))*100;
-        }
-        else if(libCount<consCount && consCount>centCount){
-          type = "Conservative";
-          percent = (consCount/(libCount+centCount+consCount))*100;
-        }
-        else{
-          type = "Centrist";
-          percent = (centCount/(libCount+centCount+consCount))*100;
-        }
-        document.getElementById("kownDisplay").textContent = "This article has been determined to be: " + type + " by " + Math.round(percent) + "% of the ratings"; 
-        //document.getElementById("kownDisplay").textContent = "Conservative: "+ consCount + "\nLiberal: "+ libCount + "\nCentrist: "+ centCount; 
-      } 
-      else{
-        document.getElementById("kownDisplay").textContent = "This article has not been rated yet";
+
+      if (resp.data == null) {
+          console.log("retrieveData(): The current page is not known to us.")
+          document.getElementById("knownDisplay").textContent = "This article has not been rated yet";
+      } else {
+          console.log("retrieveData(): The current page is known to us.")
+          console.log('response:  ' + resp.data);
+          console.log(Object.values(resp.data)[0].Classification);
+          $(document).ready(function () {
+              if (resp.data) {
+                  var consCount = 0;
+                  var libCount = 0;
+                  var centCount = 0;
+                  Object.values(resp.data).forEach(element => {
+                      if (element.Leaning == "Liberal" || element.Leaning == "Very Liberal") {
+                          libCount++;
+                      } else if (element.Leaning == "Conservative" || element.Leaning == "Very conservative") {
+                          consCount++;
+                      } else {
+                          centCount++;
+                      }
+                  });
+                  var type;
+                  var percent;
+                  if (libCount > consCount && libCount > centCount) {
+                      type = "Liberal";
+                      percent = (libCount / (libCount + centCount + consCount)) * 100;
+                  } else if (libCount < consCount && consCount > centCount) {
+                      type = "Conservative";
+                      percent = (consCount / (libCount + centCount + consCount)) * 100;
+                  } else {
+                      type = "Centrist";
+                      percent = (centCount / (libCount + centCount + consCount)) * 100;
+                  }
+                  document.getElementById("knownDisplay").textContent = "This article has been determined to be: " + type + " by " + Math.round(percent) + "% of the ratings";
+              }
+          });
       }
-    });
   });
 }
 
@@ -264,7 +264,7 @@ function getCurrentTabUrl(callback) {
 
   document.addEventListener('DOMContentLoaded', function() {
     getCurrentTabUrl(function(url,domain, title) {
-      console.log("YES I AM HERE");
+      console.log("Starting request for current page.");
       console.log(url);
       realURL = url;
       website = stripURL(url);
@@ -302,9 +302,10 @@ function getCurrentTabUrl(callback) {
         } 
       }
       console.log(url);
-      XML.open('GET', 'http://localhost:3001/api/v1/hostinfo?host='+domain, true)
+      //TODO: This localhost stuff was not uploaded and as a result I am commenting out to prevent errors in the console
+      //XML.open('GET', 'http://localhost:3001/api/v1/hostinfo?host='+domain, true)
       //XML.send("uuid="+uuid+"&time="+time+"&host="+host+"&url="+url+"&title="+title+"&link="+link+"&attitude="+attitude+"&learning="+learning);
-      XML.send() 
+      //XML.send()
   
       
        
@@ -419,9 +420,9 @@ document.getElementById("search").addEventListener("click", function() {
       
   }
 
-  XML.open('GET', 'http://localhost:3001/api/v1/attitude?start_time='+start_time+'&end_time='+end_time, true)
+  //XML.open('GET', 'http://localhost:3001/api/v1/attitude?start_time='+start_time+'&end_time='+end_time, true)
   //XML.send("uuid="+uuid+"&time="+time+"&host="+host+"&url="+url+"&title="+title+"&link="+link+"&attitude="+attitude+"&learning="+learning);
-  XML.send() 
+  //XML.send()
 
 
 
@@ -547,24 +548,25 @@ document.getElementById("search").addEventListener("click", function() {
   }
 
 
-  XML1.open('GET', 'http://localhost:3001/api/v1/learning?start_time='+start_time+'&end_time='+end_time, true)
+  //XML1.open('GET', 'http://localhost:3001/api/v1/learning?start_time='+start_time+'&end_time='+end_time, true)
   //XML.send("uuid="+uuid+"&time="+time+"&host="+host+"&url="+url+"&title="+title+"&link="+link+"&attitude="+attitude+"&learning="+learning);
-  XML1.send() 
+  //XML1.send()
   return true;
   
 });
 
+//TODO: Stripping the URL in this way will make it difficult from an analysis perspective. Not clear why this is necessary other than to get firebase to accept the string.
+//TODO: Further stripping need to be done to remove things after "?" because this information isn't necessary. Better yet, it would be better to encode this data into the packet sent by the user for analysis later. When a user comes from facebook for example there is an id there that websites use to track this kind of stuff
 function stripURL(website){
-  website = realURL.replace("https://www.", "");
-  var index = website.indexOf("/");
-  // website = website.substr(0, index+1) + website.slice(index+1).replace('/', '-');
-  var output = website.split('/');
-  output = output.shift() + (output.length ? '/' + output.join('') : '');
-  website = output;
-  website = website.replace(".com", "");
-  website = website.replace(".", "");
-  console.log("this is the url:" + website);
-  return website;
+    website = realURL.replace("https://www.", "");
+    var index = website.indexOf("/");
+    var output = website.split('/');
+    output = output.shift() + (output.length ? '/' + output.join('') : '');
+    website = output;
+    website = website.replace(".com", "");
+    website = website.replace(".", "");
+    console.log("this is the url:" + website);
+    return website;
 }
 
 
@@ -588,19 +590,17 @@ btnSubmit.addEventListener('click', () => {
   });
   console.log("leaning: " + leaning);
   console.log(website);
-  //var regex = /[.$#/[]]/g;
-  //website = website.replace('.', '');
-  console.log("HUllo" +website);
+  console.log(website);
   console.log(reas);
   
   website = stripURL(website);
+  console.log(website);
   sendData(leaning,generateIDTXT.value,attitude, website, document.getElementById("clockDisplay").innerHTML, reas);
   var save = website.split('/');
   console.log("save 0: " + save[0]);
   console.log("2: " + save[1]);
   $(document).ready(function() {
     retrieveData(save[0], save[1], generateIDTXT.value);
-    //document.getElementById("kownDisplay").textContent = response.data;
   });
   
   return true;

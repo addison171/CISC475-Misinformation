@@ -34,16 +34,14 @@
               })
           }
           finally{
-              console.log("whatevs");
+              console.log("Unknown error in firebase.js post");
           }
-
       }
       else if(msg.command=="query"){
         var data = msg.data;
         var site = data.site;
         var article = data.article;
         var userid = data.userid;
-          //var ref = firebase.database().ref('sites/' + site + '/' + article + '/' + userid + '/Leaning');
           var ref = firebase.database().ref('sites/' + site + '/' + article);
           var lean;
           ref.get().then((snapshot) => {

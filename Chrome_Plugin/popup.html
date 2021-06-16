@@ -6,7 +6,8 @@
         <meta name = "viewport" content="width = device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" media="screen" href ="css/style.css"/>
         <script src="jquery-3.1.0.min.js"></script>
-        <script src="d3.min.js" charset="utf-8"></script>
+        <!---TODO: Looks like the D2 components were not pushed either.--->
+        <!---<script src="d3.min.js" charset="utf-8"></script>--->
 
 
     </head>
@@ -32,19 +33,19 @@
         <h1 id="Title"></h1>
     <table>
 
-        <caption><h1><b><i>INFORMATION OF USER</i></b></h1></caption>
-        <tr>
+        <caption><h1 hidden><b><i>INFORMATION OF USER</i></b></h1></caption>
+        <tr hidden>
             <th><font size ="4">Chrome User ID</font></th>
         </tr>
 
-        <tr>
+        <tr hidden>
             <td>
                 <button class = "button" id="generateID" style="display:none;">Generate ID</button>
                 <input class= "style1" type="text" name="uuid" id="generateidtxt" />
             </td>  
         </tr>
 
-        <tr>
+        <tr hidden>
             <th><font size ="4">Time</font></th>
         </tr>
 
@@ -52,37 +53,37 @@
             <td id="clockDisplay" class="container"></td>
         </tr>
 
-        <tr>
+        <tr hidden>
             <th><font size ="4">URL</font></th>
         </tr>
 
 
-        <tr>
+        <tr hidden>
             <td id="urlDisplay" class="container">
 
             </td>
         </tr>
 
-        <tr>
+        <tr hidden>
             <th><font size ="4">Domain</font></th>
         </tr>
-        <tr>
+        <tr hidden>
             <td id='domainDisplay', class='container'>
 
             </td>
         </tr>
-        <tr>
+        <tr hidden>
             <th><font size ="4">Title</font></th>
         </tr>
        
-        <tr>
+        <tr hidden>
             <td id='titleDisplay', class='container'>
 
             </td>
         </tr>
 
 
-        <tr>
+        <tr hidden>
             <th hidden><font size ="4">Referring Site</font> </th>
         </tr>
         <tr>
@@ -90,22 +91,22 @@
         </tr>
 
 
-        <tr>
+        <tr hidden>
             <th><font size ="4">Political Leaning</font></th>
         </tr>
         <tr>
-            <td id='kownDisplay', class='container'>
+            <td id='knownDisplay', class='container'>
 
             </td>
         </tr>   
         
     
-        <tr>
+        <tr hidden>
             <th><font size ="4">Attitude && leaning</font></th>
         </tr>
-        <tr>
+        <tr hidden>
         <td>
-        <div>
+        <div hidden>
             <h2 >Classification</h2>
         <p><font size="3"><input checked="true" id="misinformation" name="attitude" type="radio" value="news"/>news</font></p>
         <p><font size="3"><input id="real" name="attitude" type="radio" value="satire"/>satire</font></p>
@@ -137,9 +138,10 @@
         </td>
         </tr>
 
-        <tr>
+        <tr hidden>
             <th><font size ="4">Reason</font></th>
         </tr>
+        <tr hidden>
            <p><td><input type="text" id ="Reason" name="Reason" /></td></p> 
         </tr>
 
@@ -147,7 +149,7 @@
             <th><font size ="4">Known Website && Known Article</font></th>
         </tr>
         <tr hidden>
-            <td id='kownacticleDisplay', class='container'>
+            <td id='knownacticleDisplay', class='container'>
 
             </td>
         </tr>        
@@ -182,13 +184,10 @@
                 <div class="container-attitude">
                     <svg width="100%" height="100%"></svg>
                 </div>
-
-                <div>learning</div>
-                <div class="container-learning">
+                <div>leaning</div>
+                <div class="container-leaning">
                     <svg width="100%" height="100%"></svg>
                 </div>
-
-
             </td>
         </tr>
 
@@ -196,7 +195,7 @@
 
         </table>
 
-        <table>
+        <table hidden>
             <caption><h1><b><i>Recently Visited Sites:</i></b></h1></caption>
             <tr>
                 <td>
