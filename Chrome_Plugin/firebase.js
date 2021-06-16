@@ -52,5 +52,23 @@
             console.error(error);
           });
       }
+      else if (msg.command=="post_url_history"){
+          var data = msg.data;
+          var website = data.website;
+          var id = data.id;
+          var seconds = data.seconds
+          var timestamp = data.timestamp;
+          try{
+              var newPost = firebase.database().ref('user_log/'+id).set({
+                  website: website,
+                  timestamp:timestamp,
+                  seconds: seconds
+              })
+          }
+          finally{
+              console.log("Unknown error in firebase.js post");
+          }
+
+      }
       return true;
   })
