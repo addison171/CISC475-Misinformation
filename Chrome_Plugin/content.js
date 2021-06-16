@@ -555,16 +555,14 @@ document.getElementById("search").addEventListener("click", function() {
   
 });
 
-//TODO: Stripping the URL in this way will make it difficult from an analysis perspective. Not clear why this is necessary other than to get firebase to accept the string.
 //TODO: Further stripping need to be done to remove things after "?" because this information isn't necessary. Better yet, it would be better to encode this data into the packet sent by the user for analysis later. When a user comes from facebook for example there is an id there that websites use to track this kind of stuff
 function stripURL(website){
     website = realURL.replace("https://www.", "");
-    var index = website.indexOf("/");
     var output = website.split('/');
-    output = output.shift() + (output.length ? '/' + output.join('') : '');
+    output = output.shift() + (output.length ? '/' + output.join('<fs>') : '');
     website = output;
-    website = website.replace(".com", "");
-    website = website.replace(".", "");
+    website = website.replaceAll(".", "<dot>");
+    website = escape(website);
     console.log("this is the url:" + website);
     return website;
 }
