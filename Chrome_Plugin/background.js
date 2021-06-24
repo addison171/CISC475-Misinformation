@@ -8,6 +8,9 @@ var timeOnPage = 0;
 var active_url = ""
 var userid;
 
+const generateID = () =>
+    Date.now().toString(Math.floor(Math.random() * 20) + 17);
+
 //TODO: I am copying many of these functions from content.js but these kinds of shared items should be in some kind of util.js file
 Date.prototype.Format = function (fmt) {
     var o = {

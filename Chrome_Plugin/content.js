@@ -322,9 +322,6 @@ $(document).ready(function() {
     setInterval( GetTime, 1000 );
 });
 
-const generateID = () =>
-  Date.now().toString(Math.floor(Math.random() * 20) + 17);
-
 const btnGenerate = document.getElementById('generateID');
 const generateIDTXT = document.getElementById('generateidtxt');
 const copy = document.getElementById('copy');
