@@ -14,10 +14,6 @@ const generateID = () =>
 function getDomain(url){ 
     let newURL = url.toString();
     arr = newURL.split('/');
-    console.log(arr);
-    for (x in arr){
-
-    }
     return arr[2];
 }
 //TODO: I am copying many of these functions from content.js but these kinds of shared items should be in some kind of util.js file
@@ -45,8 +41,7 @@ chrome.storage.sync.get('userid', function(items) {
         console.log("UserId: " + userid);
     }
     else {
-        //userid = generateID();
-        userid='no urls'
+        userid = generateID();
         chrome.storage.sync.set({userid: userid}, function() {
             console.log(userid);
         });
