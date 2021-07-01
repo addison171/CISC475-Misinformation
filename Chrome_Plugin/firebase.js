@@ -1,4 +1,7 @@
-  // Your web app's Firebase configuration
+self.importScripts('firebase/firebase-app.js', 'firebase/firebase-auth.js',
+    'firebase/firebase-database.js', 'firebase/firebase-analytics.js');
+
+// Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   var firebaseConfig = {
     apiKey: "AIzaSyCQsWrA1_zCAukNqv3qOUBYXY7KBudFRjQ",

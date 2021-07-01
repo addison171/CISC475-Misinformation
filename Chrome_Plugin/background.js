@@ -3,6 +3,23 @@ This script runs in the background and logs the time a user spends on each tab i
 tab and getting the URL and seeing it it has changed from the previous URL.
  */
 
+self.importScripts('firebase/firebase-app.js', 'firebase/firebase-auth.js',
+    'firebase/firebase-database.js', 'firebase/firebase-analytics.js');
+
+var firebaseConfig = {
+    apiKey: "AIzaSyCQsWrA1_zCAukNqv3qOUBYXY7KBudFRjQ",
+    authDomain: "cisc475database.firebaseapp.com",
+    databaseURL: "https://cisc475database-default-rtdb.firebaseio.com",
+    projectId: "cisc475database",
+    storageBucket: "cisc475database.appspot.com",
+    messagingSenderId: "372963635946",
+    appId: "1:372963635946:web:7ed6c09fce9f9bff8d1d93",
+    measurementId: "G-JZ5HT65P6V"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
 var myVar = setInterval(tabTimer, 1000);
 var timeOnPage = 0;
 var active_url = ""
@@ -69,18 +86,22 @@ function tabTimer () {
      */
 
     chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-        var url = tabs[0].url;
-        const domain = getDomain(url);
-        console.log(domain);
-        if (active_url == "") {
-            active_url = domain;
-        } else if (active_url != domain && active_url != "") {
-            console.log("previous active domain: " + active_url + ", " + timeOnPage + "s");
-            sendData(userid, active_url, Date(), timeOnPage);
-            timeOnPage = 0;
-            active_url = domain;
-        } else if (active_url == domain) {
-            timeOnPage += 1;
-        }
+      try {
+            var url = tabs[0].url;
+            const domain = getDomain(url);
+            console.log(domain);
+            if (active_url == "") {
+                active_url = domain;
+            } else if (active_url != domain && active_url != "") {
+                console.log("previous active domain: " + active_url + ", " + timeOnPage + "s");
+                sendData(userid, active_url, Date(), timeOnPage);
+                timeOnPage = 0;
+                active_url = domain;
+            } else if (active_url == domain) {
+                timeOnPage += 1;
+            }
+        } catch (e) {
+          console.log("background.js, Error in query: " + e.message);
+      }
     });
 }

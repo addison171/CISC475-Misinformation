@@ -1,0 +1,10 @@
+'''Log of changes for others working on the project'''
+
+
+2021-06-30 (MLM):
+This video was pretty helpful with solving the Chrome Extension Manifest issue going from v2 to v3.
+How to add Firebase to a Service Worker - Chrome Extension Manifest Version MV3
+https://www.youtube.com/watch?v=UjH2INUPmF4
+
+'''Delete if this isn't useful to keep around'''
+

@@ -25,9 +25,9 @@
                     Ready();
                     firebase.database().ref('USER/'+ url).set({
                         ID: id,
-                        TIME: time;
-                        URL: url;
-                        DOMAIN: domain;
-                        LINK: link;
+                        TIME: time,
+                        URL: url,
+                        DOMAIN: domain,
+                        LINK: link
                         });
                 }

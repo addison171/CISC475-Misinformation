@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "Chrome Plugin",
   "description": "This extension displays a simple visualization of browsing history",
@@ -10,16 +10,15 @@
     "16": "icon16.png"
   },
 
-  "browser_action": {
+  "action": {
     "default_icon": "icon32.png",
     "default_popup": "popup.html"
   },
   
   "background": {
-    "page": "background.html",
-    "persistent": false
+    "service_Worker": "firebase.js",
+    "service_worker": "background.js"
   },
-
 
   "permissions": [
     "tabs",
@@ -27,9 +26,8 @@
     "storage",
     "history"
   ],
-  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com https://www.googletagmanager.com; object-src 'self'",
 
-  "options_page": 
+  "options_page":
   "options.html"
 }
 
