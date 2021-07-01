@@ -16,8 +16,7 @@
   },
   
   "background": {
-    "service_Worker": "firebase.js",
-    "service_worker": "background.js"
+    "service_worker": "worker_wrapper.js"
   },
 
   "permissions": [
