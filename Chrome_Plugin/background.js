@@ -3,10 +3,17 @@ This script runs in the background and logs the time a user spends on each tab i
 tab and getting the URL and seeing it it has changed from the previous URL.
  */
 
-var myVar = setInterval(tabTimer, 1000);
+
 var timeOnPage = 0;
-var active_url = ""
+var active_url = "";
 var userid;
+
+
+chrome.alarms.create("TabChecker", {delayInMinutes: 0.167, periodInMinutes: 0.167});
+chrome.alarms.onAlarm.addListener(function (alarm){
+    tabTimer();
+    chrome.alarms.create("TabChecker", {delayInMinutes: 0.167, periodInMinutes: 0.167});
+});
 
 const generateID = () =>
     Date.now().toString(Math.floor(Math.random() * 20) + 17);

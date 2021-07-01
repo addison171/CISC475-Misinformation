@@ -23,7 +23,8 @@
     "tabs",
     "contextMenus",
     "storage",
-    "history"
+    "history",
+    "alarms"
   ],
 
   "options_page":
