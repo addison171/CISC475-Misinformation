@@ -19,6 +19,11 @@
     "service_worker": "worker_wrapper.js"
   },
 
+  "content_scripts":[{
+    "matches": ["http://*/*", "https://*/*"],
+    "js":["ribbon.js"]
+}],
+
   "permissions": [
     "tabs",
     "contextMenus",
