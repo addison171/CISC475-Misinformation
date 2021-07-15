@@ -79,7 +79,10 @@ function tabTimer () {
       try {
             var url = tabs[0].url;
             const domain = getDomain(url);
-            console.log(domain);
+            var msg = getData(domain);
+            console.log('msg below')
+            console.log(msg);
+            chrome.tabs.sendMessage(tabs[0].id, msg);
             if (active_url == "") {
                 active_url = domain;
             } else if (active_url != domain && active_url != "") {
@@ -94,4 +97,21 @@ function tabTimer () {
           console.log("background.js, Error in query: " + e.message);
       }
     });
+}
+
+function getData(domain){
+    var data;
+    arr=domain.split('.');
+    var name = arr[1];
+
+    try {
+        firebase.database().ref('bias_annotations/'+name).on('value', (snapshot)=>{
+            data = snapshot.val();
+            console.log(data);
+        })
+    } catch (error) {
+        console.log("Error! We probably don't have this url in the database.");
+        console.log(error);
+    }
+    return data;
 }

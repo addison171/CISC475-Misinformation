@@ -1,49 +1,50 @@
 console.log("ribbon.js is active");
-document.onload = initializeFirebase();
-console.log('firebase initialized (?)');
-document.head.onload = dropDownRibbon();
+//document.body.onload = iframeRibbon();
+//document.body.onload = dropDownRibbon();
 console.log('dropdown ribbon initialized');
+chrome.runtime.onMessage.addListener(gotMessage);
+var leaning, factual;
 
 
-// Initialize Firebase
-var firebaseConfig = {
-  apiKey: "AIzaSyCQsWrA1_zCAukNqv3qOUBYXY7KBudFRjQ",
-  authDomain: "cisc475database.firebaseapp.com",
-  databaseURL: "https://cisc475database-default-rtdb.firebaseio.com",
-  projectId: "cisc475database",
-  storageBucket: "cisc475database.appspot.com",
-  messagingSenderId: "372963635946",
-  appId: "1:372963635946:web:7ed6c09fce9f9bff8d1d93",
-  measurementId: "G-JZ5HT65P6V"
-};
 
-
-firebase.initializeApp(firebaseConfig);
-
-  var ref = firebase.database().ref();
-
-  /*ref.on("value", function(snapshot) {
-     console.log(snapshot.val());
-  }, function (error) {
-     console.log("what is below?")
-     console.log("Error: " + error.code);
-  });*/
-
-function initializeFirebase(){
-  let scriptA = document.createElement('script');
-  let scriptB = document.createElement('script');
-
-  scriptA.src = "https://www.gstatic.com/firebasejs/4.1.3/firebase.js"
-  scriptB.src = "https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"
+function gotMessage(msg, sender, sendResponse){
+  console.log('message recieved!');
+  console.log(msg);
+  try {
+    var keys = Object.keys(msg);
+    var k=keys[8];
+    leaning = msg[k].leaning;
+    factual = msg[k].factual;
+    dropDownRibbon();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function dropDownRibbon(){
-  let rbnDiv = document.createElement('div')
-  let style = document.createElement('style')
+  let rbnDiv = document.createElement('div');
+  let style = document.createElement('style');
+  let p1 = document.createElement('p');
+  let p2 = document.createElement('p');
  
-  style.textContent = '#rbnDiv{background-color:green; display:block; height:50px;}'
-  rbnDiv.id='rbnDiv'
-  rbnDiv.textContent = 'hello'
-  document.body.insertBefore(rbnDiv, document.body.firstChild)
-  document.body.insertBefore(style, document.body.firstChild)
+  rbnDiv.id='rbnDiv';
+  p1.id='p1';
+  p2.id='p2';
+
+  style.textContent = '#rbnDiv{background-color:darkslategray; color:white; display:flex; height:50px;font-size:25px;} #p1{text-align:center;flex:1;} #p2{text-align:center;flex:1;}';
+  p1.textContent = `${leaning}`;
+  p2.textContent = `${factual}`;
+
+  rbnDiv.appendChild(p1);
+  rbnDiv.appendChild(p2);
+  document.body.insertBefore(rbnDiv, document.body.firstChild);
+  document.body.insertBefore(style, document.body.firstChild);
 }
+
+/*function iframeRibbon(){
+  let frame = document.createElement('iframe');
+  frame.src = "http://127.0.0.1:5500/WebDev/p5page/index.html";
+  frame.style = "width: 100vw; height: 42px; border: 0px; overflow: hidden;"
+  document.body.insertBefore(frame, document.body.firstChild);
+}*/
+
