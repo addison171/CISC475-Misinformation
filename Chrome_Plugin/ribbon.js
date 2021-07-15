@@ -22,6 +22,12 @@ function gotMessage(msg, sender, sendResponse){
 }
 
 function dropDownRibbon(){
+  try {
+    document.getElementById('rbnDiv').remove();
+  } catch (error) {
+    console.log(error);
+  }
+
   let rbnDiv = document.createElement('div');
   let style = document.createElement('style');
   let p1 = document.createElement('p');
